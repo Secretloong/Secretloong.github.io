@@ -1,27 +1,31 @@
 ---
 layout: post
-title: 公式测试
-date: 2017-07-30
-categories: 测试
-tags: 测试
+title: Linux头文件版本号
+date: 2018-06-28
+categories: Linux
+tags: Linux
 ---
 
-**这是一个不`align`的公式**：
+**重点：version.h中的版本号以10进制显示，需要转换为16进制查看**
 
-$$
-\forall \alpha \in A, \quad a \cdot b = 0
-$$
+Linux的内核头文件一般存储在：
+<pre><code>/usr/include/linux/version.h
+</code></pre>
 
-**这是一个`align`的公式**：
+其内容一般为：
+<pre><code>#define LINUX_VERSION_CODE 132640
+#define KERNEL_VERSION(a,b,c) (((a) << 16) + ((b) << 8) + (c))
+#define RHEL_MAJOR 6
+#define RHEL_MINOR 9
+#define RHEL_RELEASE_VERSION(a,b) (((a) << 8) + (b))
+#define RHEL_RELEASE_CODE 1545
+#define RHEL_RELEASE 695
+#define RHEL_16KSTACK_BUILD 520
+</code></pre>
 
-$$
-\text{for OTP : $\qquad$ if }\quad E(k,\:m)=c\\
-\begin{align}
-k\oplus m &= c \\
-k &= m\oplus c
-\end{align}
-\\
-\#\{\;k \in \mathscr K : \quad E(k,\:m)=c \;\}=1 \quad \forall m,\:c
-$$
+其中132640的16进制数为20620，可以判断其为Lilnux 2.6.20
 
-**注意：**公式块要想有较好的显示效果，必须在公式块标记符`$$`**前后**留有空行，否则公式将不能正常居中。行内公式无此问题。
+这个问题是在安装最新的Gblic (glibc-2.27)时发现的，其需要还少Linux 3.2.0的版本。
+
+通过查找Gblic与Linux 内核的关系，找到glibc-2.20安装。查找对应关系的网址如下：
+https://sourceware.org/glibc/wiki/Glibc%20Timeline
